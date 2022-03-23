@@ -16,7 +16,7 @@ const todoSlice = createSlice({
     name: "sno",
     initialState: {
         sno: 1,
-        text: 'aa',
+        text: '디폴트값입니다.',
     },
     reducers: {
         changeText: (state, action) => {
@@ -26,6 +26,10 @@ const todoSlice = createSlice({
     extraReducers: {
         [getHelloWorld.fulfilled]: (state, action) => {
             console.log('getHelloWorld.fulfilled', action)
+            if(action.payload.sno === -1){ 
+                alert("존재하지않는 sno입니다.")
+                return
+            }
             return action.payload
         }
     }
