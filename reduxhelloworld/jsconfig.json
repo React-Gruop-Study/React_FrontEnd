@@ -1,7 +1,6 @@
-// cross-env를 사용한 절대경로 라이브러리 사용 $ npm install --save-dev cross-env
 {
-    "compilerOptions": {
-      "baseUrl": "src"
-    },
-    "includes": ["src"]
+  "compilerOptions": {
+    "baseUrl": "src"
+  },
+  "includes": ["src"]
 }
