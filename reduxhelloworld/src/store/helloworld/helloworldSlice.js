@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { getHelloWorld } from 'api/index';
+import { getHelloWorld, saveTodo } from 'api/index';
 
 // 리덕스로 비동기 요청을 위하여 Thunk라는 미들웨어를 설정했다.
 // rejectWithValue는 예외사항이 발생하여 fulfilled(성공)로 가지않고 reject(실패)로 가기위해서
@@ -10,11 +10,23 @@ export const thunkGetHelloWorld = createAsyncThunk(
   async (sno, { rejectWithValue }) => {
     try {
       const res = await getHelloWorld(sno);
-
+      console.log('aaaaaaaaaaaaaa');
       // rejectWithValue의 스트링값이 state.message로 전달된다.
       // 화살표함수가 있으면 브레이스({})로 감싸야한다. 감싸지않으면 기본으로 return이 된다.
       // 성공했지만 -1의 경우 rejectWithValue를 통해 에러메세지를 던진다.
       if (res.sno === -1) return rejectWithValue('존재하지않는 sno입니다.');
+      return res;
+    } catch (e) {
+      return rejectWithValue(e.message);
+    }
+  },
+);
+
+export const thunkSaveTodo = createAsyncThunk(
+  'saveTodo',
+  async (TestDTO, { rejectWithValue }) => {
+    try {
+      const res = await saveTodo(TestDTO);
       return res;
     } catch (e) {
       return rejectWithValue(e.message);
@@ -49,8 +61,11 @@ const todoSlice = createSlice({
   // fulfilled와 rejected는 side Effect이다
   // side Effect처리를 어떻게하느냐에 따라 달라진다. 무조건 부정적인게 아니다.
   extraReducers: {
+    /**
+     * thunkGetHelloWorld
+     */
     [thunkGetHelloWorld.pending]: (state, action) => {
-      console.log('getHthunkGetHelloWorldelloWorld.pending', action);
+      console.log('thunkGetHelloWorld.pending', action);
       state.loading = true;
     },
     [thunkGetHelloWorld.fulfilled]: (state, action) => {
@@ -71,6 +86,26 @@ const todoSlice = createSlice({
       // state.message는 initialState를 가르킨다. 자동으로 매핑된다.
       state.message = action.payload;
       state.loading = false;
+      alert(state.message);
+    },
+
+    /**
+     * thunkSaveTodo
+     */
+    [thunkSaveTodo.pending]: (state, action) => {
+      console.log('thunkSaveTodo.pending', action);
+      state.loading = true;
+    },
+    [thunkSaveTodo.fulfilled]: (state, action) => {
+      console.log('thunkSaveTodo.fulfilled', action);
+      alert(action.payload);
+      state.loading = false;
+    },
+    [thunkSaveTodo.rejected]: (state, action) => {
+      console.log('thunkSaveTodo.rejected', action);
+      state.message = action.payload;
+      state.loading = false;
+      alert(state.message);
     },
   },
 });
