@@ -29,6 +29,9 @@ module.exports = {
       'error',
       { props: true, ignorePropertyModificationsFor: ['state'] },
     ],
+    // 사용하지 않는 파일이 있어도 구동이 되게함
     'import/no-cycle': 'off',
+    // 사용하지 않는 변수가 있어도 구동이 되게함
+    'no-unused-vars': 'off',
   },
 };
