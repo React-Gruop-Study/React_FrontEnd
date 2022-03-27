@@ -25,8 +25,16 @@ export const getHelloWorld = async (sno) => {
   const res = await api.get(`/helloworld/${sno}`);
   return res.data;
 };
+
 export const saveTodo = async (TestDTO) => {
   const res = await api.post(`/todo`, TestDTO, {
+    headers: { 'Content-Type': `application/json` },
+  });
+  return res.data;
+};
+
+export const deleteTodo = async (TestDTO) => {
+  const res = await api.delete(`/deletetodo`, TestDTO, {
     headers: { 'Content-Type': `application/json` },
   });
   return res.data;
