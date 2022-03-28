@@ -1,40 +1,43 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
+import axios from 'axios';
 
-export const getHelloWorld = createAsyncThunk('getHelloWorld', async(sno) => {
-    try{
-        const res = await axios.get('http://localhost:8080/helloworld/'+sno)
-        return res.data
-    }catch(e){
-        alert(e)
-    }finally{
-        console.log('Finally 서비스로직을 구현하는부분')
-    }
-})
+// axios.create를 사용하여 인스턴스를 만들수있다.
+// 더깔끔함, 중복되는 코드 방지, 초기설정가능(셋타임아웃 등)
+const api = axios.create({
+  baseURL: 'http://localhost:8080',
 
-const todoSlice = createSlice({ 
-    name: "sno",
-    initialState: {
-        sno: 1,
-        text: '디폴트값입니다.',
-    },
-    reducers: {
-        changeText: (state, action) => {
-            state.text = action.payload
-        }
-    },
-    extraReducers: {
-        [getHelloWorld.fulfilled]: (state, action) => {
-            console.log('getHelloWorld.fulfilled', action)
-            if(action.payload.sno === -1){ 
-                alert("존재하지않는 sno입니다.")
-                return
-            }
-            return action.payload
-        }
-    }
-})
+  // 타임아웃시 helloworldSlice catch로 넘어간다(rejectWithValue)
+  timeout: 1000,
+  headers: { 'Content-Type': `application/json` },
+});
 
-export const {changeText} = todoSlice.actions
+// createAsyncThunk는 리덕스전용이기떄문에 리덕스 이외에 api를 호출할때를 위하여
+// thunk는 따로 slice로 분리했다.
+// 비즈니스로직은 여기서 일어나지않고 api호출만한다.
+export const getHelloWorld = async (sno) => {
+  //
+  // try{
+  //     const res = await axios.get('http://localhost:8080/helloworld/'+sno)
+  //     return res.data
+  // }catch(e){
+  //     alert(e)
+  // }finally{
+  //     console.log('Finally 서비스로직을 구현하는부분')
+  // }
+  const res = await api.get(`/helloworld/${sno}`);
+  return res.data;
+};
 
-export default todoSlice.reducer
+export const saveTodo = async (TestDTO) => {
+  const res = await api.post(`/todo`, JSON.stringify(TestDTO));
+  return res.data;
+};
+
+export const modifyTodo = async (TestDTO) => {
+  const res = await api.put(`/${TestDTO.sno}`, JSON.stringify(TestDTO));
+  return res.data;
+};
+
+export const deleteTodo = async (sno) => {
+  const res = await api.delete(`/${sno}`);
+  return res.data;
+};
