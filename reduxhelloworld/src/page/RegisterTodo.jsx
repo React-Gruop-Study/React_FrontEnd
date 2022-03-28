@@ -1,9 +1,9 @@
-import TodoSave from 'component/RegisterTodo/TodoSave';
+import TodoSave from 'component/registerTodo/TodoSave';
 import { useDispatch } from 'react-redux';
 import React, { useRef } from 'react';
 import { thunkSaveTodo } from 'store/helloworld/helloworldSlice';
 import { useNavigate } from 'react-router-dom';
-import { LinkToMain } from 'component/common/LinkTo';
+import { LinkToMain } from 'component/location/LinkTo';
 
 const RegisterTodo = () => {
   const saveTextRef = useRef();

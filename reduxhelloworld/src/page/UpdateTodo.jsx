@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { LinkToMain } from 'component/common/LinkTo';
+import { LinkToMain } from 'component/location/LinkTo';
 import { thunkModifyTodo } from 'store/helloworld/helloworldSlice';
 import { useNavigate } from 'react-router-dom';
 
