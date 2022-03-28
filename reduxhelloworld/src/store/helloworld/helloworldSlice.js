@@ -36,7 +36,6 @@ export const thunkSaveTodo = createAsyncThunk(
 export const thunkModifyTodo = createAsyncThunk(
   'modifyTodo',
   // rejectWithValue가 두번째 파라미터에 있어야한다.
-  // async (TestDTO, { rejectWithValue }, sno) => {
   async (TestDTO, { rejectWithValue }) => {
     try {
       const res = await modifyTodo(TestDTO);
