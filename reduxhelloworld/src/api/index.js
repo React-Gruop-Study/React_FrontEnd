@@ -7,6 +7,7 @@ const api = axios.create({
 
   // 타임아웃시 helloworldSlice catch로 넘어간다(rejectWithValue)
   timeout: 1000,
+  headers: { 'Content-Type': `application/json` },
 });
 
 // createAsyncThunk는 리덕스전용이기떄문에 리덕스 이외에 api를 호출할때를 위하여
@@ -27,15 +28,16 @@ export const getHelloWorld = async (sno) => {
 };
 
 export const saveTodo = async (TestDTO) => {
-  const res = await api.post(`/todo`, TestDTO, {
-    headers: { 'Content-Type': `application/json` },
-  });
+  const res = await api.post(`/todo`, JSON.stringify(TestDTO));
   return res.data;
 };
 
-export const deleteTodo = async (TestDTO) => {
-  const res = await api.delete(`/deletetodo`, TestDTO, {
-    headers: { 'Content-Type': `application/json` },
-  });
+export const modifyTodo = async (TestDTO) => {
+  const res = await api.put(`/${TestDTO.sno}`, JSON.stringify(TestDTO));
+  return res.data;
+};
+
+export const deleteTodo = async (sno) => {
+  const res = await api.delete(`/${sno}`);
   return res.data;
 };
