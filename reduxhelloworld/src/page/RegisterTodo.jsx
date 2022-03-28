@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import React, { useRef } from 'react';
 import { thunkSaveTodo } from 'store/helloworld/helloworldSlice';
 import { useNavigate } from 'react-router-dom';
+import { LinkToMain } from 'component/common/LinkTo';
 
 const RegisterTodo = () => {
   const saveTextRef = useRef();
@@ -12,21 +13,15 @@ const RegisterTodo = () => {
   const saveTextFn = () => {
     const obj = {};
     obj.text = saveTextRef.current.value;
-    dispatch(thunkSaveTodo(JSON.stringify(obj))).then(() => {
+    dispatch(thunkSaveTodo(obj)).then(() => {
       navigator('/');
     });
-  };
-
-  const linkToMain = () => {
-    navigator('/');
   };
 
   return (
     <div>
       <TodoSave ref={saveTextRef} onClick={saveTextFn} />
-      <button type='button' onClick={linkToMain}>
-        목록으로 돌아가기
-      </button>
+      <LinkToMain />
     </div>
   );
 };

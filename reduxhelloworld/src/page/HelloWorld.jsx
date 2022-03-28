@@ -24,11 +24,14 @@ const HelloWorld = () => {
     // catch는 rejected에서 관리한다.
   };
 
+  const modifySnoFn = () => {
+    navigator('/modifytodo');
+  };
+
   const deleteSnoFn = () => {
-    const obj = {};
-    obj.sno = deleteSnoNum.toString();
-    console.log(JSON.stringify(obj));
-    dispatch(thunkDeleteTodo(JSON.stringify(obj)));
+    dispatch(thunkDeleteTodo(Number(deleteSnoNum))).then(() => {
+      navigator('/');
+    });
   };
 
   const linkToRegist = () => {
@@ -40,6 +43,9 @@ const HelloWorld = () => {
     <div>
       <SnoInput ref={snoRef} onClick={saveSnoFn} />
       <ResViewer />
+      <button type='button' onClick={modifySnoFn}>
+        현재 글 수정하기
+      </button>
       <button type='button' onClick={deleteSnoFn}>
         현재 글 삭제하기
       </button>

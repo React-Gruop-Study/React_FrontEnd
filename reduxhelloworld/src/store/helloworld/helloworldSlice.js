@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { deleteTodo, getHelloWorld, saveTodo } from 'api/index';
+import { deleteTodo, getHelloWorld, modifyTodo, saveTodo } from 'api/index';
 
 // 리덕스로 비동기 요청을 위하여 Thunk라는 미들웨어를 설정했다.
 // rejectWithValue는 예외사항이 발생하여 fulfilled(성공)로 가지않고 reject(실패)로 가기위해서
@@ -33,11 +33,25 @@ export const thunkSaveTodo = createAsyncThunk(
   },
 );
 
-export const thunkDeleteTodo = createAsyncThunk(
-  'deleteTodo',
+export const thunkModifyTodo = createAsyncThunk(
+  'modifyTodo',
+  // rejectWithValue가 두번째 파라미터에 있어야한다.
+  // async (TestDTO, { rejectWithValue }, sno) => {
   async (TestDTO, { rejectWithValue }) => {
     try {
-      const res = await deleteTodo(TestDTO);
+      const res = await modifyTodo(TestDTO);
+      return res;
+    } catch (e) {
+      return rejectWithValue(e.message);
+    }
+  },
+);
+
+export const thunkDeleteTodo = createAsyncThunk(
+  'deleteTodo',
+  async (sno, { rejectWithValue }) => {
+    try {
+      const res = await deleteTodo(sno);
       return res;
     } catch (e) {
       return rejectWithValue(e.message);
@@ -48,7 +62,7 @@ export const thunkDeleteTodo = createAsyncThunk(
 const todoSlice = createSlice({
   name: 'sno',
   initialState: {
-    sno: 1,
+    sno: 0,
     text: '디폴트값입니다.',
 
     // reject를 위해서 message처리를 했다.
@@ -109,12 +123,31 @@ const todoSlice = createSlice({
     },
     [thunkSaveTodo.fulfilled]: (state, action) => {
       console.log('thunkSaveTodo.fulfilled', action);
-      state.sno = action.payload;
-      alert(`sno ${state.sno} 번으로 등록 되었습니다.`);
+      alert(`sno ${action.payload} 번으로 등록 되었습니다.`);
       state.loading = false;
     },
     [thunkSaveTodo.rejected]: (state, action) => {
       console.log('thunkSaveTodo.rejected', action);
+      state.message = action.payload;
+      state.loading = false;
+      alert(state.message);
+    },
+
+    /**
+     * thunkModifyTodo
+     */
+    [thunkModifyTodo.pending]: (state, action) => {
+      console.log('thunkModifyTodo.pending', action);
+      state.loading = true;
+    },
+    [thunkModifyTodo.fulfilled]: (state, action) => {
+      console.log('thunkModifyTodo.fulfilled', action);
+      state.message = action.payload;
+      alert(state.message);
+      state.loading = false;
+    },
+    [thunkModifyTodo.rejected]: (state, action) => {
+      console.log('thunkModifyTodo.rejected', action);
       state.message = action.payload;
       state.loading = false;
       alert(state.message);
