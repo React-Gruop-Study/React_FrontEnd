@@ -3,10 +3,10 @@ import { useSelector, useDispatch } from 'react-redux';
 import { LinkToMain } from 'component/location/LinkTo';
 import { thunkModifyTodo } from 'store/helloworld/helloworldSlice';
 import { useNavigate } from 'react-router-dom';
+import UpdateViewer from 'component/updatetodo/UpdateInput';
 
 const UpdateTodo = () => {
   const sno = useSelector((state) => state.todo.sno);
-  const text = useSelector((state) => state.todo.text);
   const dispatch = useDispatch();
   const changedText = useRef();
   const navigator = useNavigate();
@@ -22,18 +22,7 @@ const UpdateTodo = () => {
 
   return (
     <div>
-      <div>
-        sno : <input type='text' value={sno} readOnly />
-      </div>
-      <div>
-        변경할 값 : <input type='text' defaultValue={text} ref={changedText} />
-      </div>
-      <div>
-        <button type='button' onClick={modifyTodoFn}>
-          수정완료
-        </button>
-        <LinkToMain />
-      </div>
+      <UpdateViewer ref={changedText} onClick={modifyTodoFn} />
     </div>
   );
 };
