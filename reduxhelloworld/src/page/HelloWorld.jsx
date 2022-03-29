@@ -42,16 +42,22 @@ const HelloWorld = () => {
   return (
     <div>
       <SnoInput ref={snoRef} onClick={saveSnoFn} />
-      <ResViewer />
-      <button type='button' onClick={modifySnoFn}>
-        현재 글 수정하기
-      </button>
-      <button type='button' onClick={deleteSnoFn}>
-        현재 글 삭제하기
-      </button>
-      <button type='button' onClick={linkToRegist}>
-        새로운 텍스트 등록
-      </button>
+      <ResViewer onChange={saveSnoFn} />
+      <div>
+        <button type='button' onClick={modifySnoFn}>
+          현재 글 수정하기
+        </button>
+      </div>
+      <div>
+        <button type='button' onClick={deleteSnoFn}>
+          현재 글 삭제하기
+        </button>
+      </div>
+      <div>
+        <button type='button' onClick={linkToRegist}>
+          새로운 텍스트 등록
+        </button>
+      </div>
     </div>
   );
 };

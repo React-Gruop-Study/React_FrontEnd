@@ -1,4 +1,4 @@
-import TodoSave from 'component/registerTodo/TodoSave';
+import TodoSave from 'component/registertodo/TodoSave';
 import { useDispatch } from 'react-redux';
 import React, { useRef } from 'react';
 import { thunkSaveTodo } from 'store/helloworld/helloworldSlice';
