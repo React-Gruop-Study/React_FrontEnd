@@ -12,10 +12,8 @@ const UpdateTodo = () => {
   const navigator = useNavigate();
 
   const modifyTodoFn = () => {
-    const obj = {};
-    obj.sno = sno.toString();
-    obj.text = changedText.current.value;
-    dispatch(thunkModifyTodo(obj)).then(() => {
+    const text = changedText.current.value;
+    dispatch(thunkModifyTodo({ sno, text })).then(() => {
       navigator('/');
     });
   };

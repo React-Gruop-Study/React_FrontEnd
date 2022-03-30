@@ -11,9 +11,8 @@ const RegisterTodo = () => {
   const navigator = useNavigate();
 
   const saveTextFn = () => {
-    const obj = {};
-    obj.text = saveTextRef.current.value;
-    dispatch(thunkSaveTodo(obj)).then(() => {
+    const text = saveTextRef.current.value;
+    dispatch(thunkSaveTodo({ text })).then(() => {
       navigator('/');
     });
   };
