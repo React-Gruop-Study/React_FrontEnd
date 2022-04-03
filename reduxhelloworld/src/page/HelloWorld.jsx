@@ -1,3 +1,4 @@
+import FirebaseTest from 'component/helloworld/FirebaseTest';
 import ResViewer from 'component/helloworld/ResViewer';
 import SnoInput from 'component/helloworld/SnoInput';
 import { LinkToRegist } from 'component/location/LinkTo';
@@ -27,12 +28,13 @@ const HelloWorld = () => {
    */
   const snoNum = useSelector((state) => state.todo.sno);
 
-  useEffect(() => {
-    dispatch(thunkGetHelloWorld(snoNum));
-  }, []);
+  // api작업으로 잠시 주석처리
+  // useEffect(() => {
+  //   dispatch(thunkGetHelloWorld(snoNum));
+  // }, []);
 
   // 각 api호출마다 하나의 함수로 분리한다.
-  const saveSnoFn = () => {
+  const getSnoFn = () => {
     // dispatch는 fufilled시 then이 가능하다.
     dispatch(thunkGetHelloWorld(Number(snoRef.current.value))).then(() => {
       // navigator('/chicken');
@@ -53,7 +55,7 @@ const HelloWorld = () => {
   // snoinput에서 클릭하여 조회하는 이벤트를 상위로올려서 함수를 파라미터로 전달한다.
   return (
     <div>
-      <SnoInput ref={snoRef} onClick={saveSnoFn} />
+      <SnoInput ref={snoRef} onClick={getSnoFn} />
       <ResViewer />
       <div>
         <button type='button' onClick={modifySnoFn}>
@@ -68,6 +70,7 @@ const HelloWorld = () => {
       <div>
         <LinkToRegist />
       </div>
+      <FirebaseTest />
     </div>
   );
 };
