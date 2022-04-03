@@ -62,7 +62,7 @@ const todoSlice = createSlice({
   name: 'sno',
   initialState: {
     sno: 0,
-    text: '디폴트값입니다.',
+    text: 'HELLO WORLD.',
 
     // reject를 위해서 message처리를 했다.
     message: '',

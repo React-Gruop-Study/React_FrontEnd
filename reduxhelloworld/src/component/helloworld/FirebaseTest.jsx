@@ -1,23 +1,15 @@
-import TodoSave from 'component/registertodo/TodoSave';
-import { useDispatch } from 'react-redux';
-import React, { useRef } from 'react';
-import { thunkSaveTodo } from 'store/helloworld/helloworldSlice';
-import { useNavigate } from 'react-router-dom';
-import { LinkToMain } from 'component/location/LinkTo';
+import React, { useEffect } from 'react';
+import { initialize } from 'config/firebaseInit';
+import { doc, getFirestore, onSnapshot, setDoc } from 'firebase/firestore';
 import {
+  getMetadata,
   getStorage,
   ref,
   uploadBytes,
   uploadBytesResumable,
 } from '@firebase/storage';
-import { initialize } from 'config/firebaseInit';
-import { doc, getFirestore, onSnapshot, setDoc } from 'firebase/firestore';
 
-const RegisterTodo = () => {
-  const saveTextRef = useRef();
-  const dispatch = useDispatch();
-  const navigator = useNavigate();
-
+const FirebaseTest = () => {
   const firebaseDB = getFirestore(initialize);
   const storage = getStorage(initialize);
 
@@ -29,6 +21,12 @@ const RegisterTodo = () => {
   //   .then((res) => {
   //     console.log(res);
   //   });
+
+  const registText = () => {
+    setDoc(doc(firebaseDB, 'Test', '2'), {
+      text: 'HELLO WORLD',
+    }).then(() => alert('저장완료'));
+  };
 
   // 실시간 데이터 가져오기
   onSnapshot(doc(firebaseDB, 'Test', '2'), (res) => {
@@ -88,8 +86,6 @@ const RegisterTodo = () => {
       );
     });
 
-    // for문 안에두면 메세지가 파일갯수마다 나온다
-    // let을 쓰지않고 for문안에 넣어도 한번만 나오게 가능한지?
     uploadFiles
       .then(() => {
         console.log('파일업로드 성공');
@@ -97,28 +93,22 @@ const RegisterTodo = () => {
       .catch((error) => console.log(error));
   };
 
-  const saveTextFn = () => {
-    const text = saveTextRef.current.value;
-    dispatch(thunkSaveTodo({ text })).then(() => {
-      navigator('/');
-    });
-  };
-
-  // ref 두번째 파라미터는 업로드한 파일명과 스토리지에 등록하는 파일명이 같아야한다. 임의로 수정하면 에러남.
-  // const storageRef = ref(storage, '1'); -> 에러
-  // uuid, path, imgName 저장용
-  const registText = () => {
-    setDoc(doc(firebaseDB, 'Test', '2'), {
-      text: 'HELLO WORLD',
-    }).then(() => alert('저장완료'));
-  };
-
   return (
     <div>
-      <TodoSave ref={saveTextRef} onClick={saveTextFn} onChange={checkFile} />
-      <LinkToMain />
+      <h4>FirebaseTest</h4>
+      <div>
+        <button type='button' onClick={registText}>
+          텍스트 파이어베이스에 저장하기
+        </button>
+      </div>
+      <input type='file' onChange={checkFile} multiple />
+      <img
+        src='https://firebasestorage.googleapis.com/v0/b/journey-study.appspot.com/o/테크스택_및_협업툴.png?alt=media'
+        width='350'
+        height='350'
+      />
     </div>
   );
 };
 
-export default RegisterTodo;
+export default FirebaseTest;

@@ -27,13 +27,13 @@ export const getHelloWorld = async (sno) => {
   return res.data;
 };
 
-export const saveTodo = async (TestDTO) => {
-  const res = await api.post(`/todo`, JSON.stringify(TestDTO));
+export const saveTodo = async ({ text }) => {
+  const res = await api.post(`/todo`, JSON.stringify({ text }));
   return res.data;
 };
 
-export const modifyTodo = async (TestDTO) => {
-  const res = await api.put(`/${TestDTO.sno}`, JSON.stringify(TestDTO));
+export const modifyTodo = async ({ sno, text }) => {
+  const res = await api.put(`/${sno}`, JSON.stringify({ sno, text }));
   return res.data;
 };
 
