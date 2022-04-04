@@ -34,8 +34,6 @@ const RegisterTodo = () => {
   onSnapshot(doc(firebaseDB, 'Test', '2'), (res) => {
     console.log(res.data());
   });
-  let uploadFiles;
-  let storageRef;
   const checkFile = (event) => {
     console.log(event.target.files);
     const file = Array.from(event.target.files);
@@ -47,8 +45,10 @@ const RegisterTodo = () => {
     file.forEach((files, idx) => {
       console.log(files);
       console.log(idx);
-      storageRef = ref(storage, files.name);
-      uploadFiles = uploadBytes(storageRef, file[idx]);
+      // ref 두번째 파라미터는 업로드한 파일명과 스토리지에 등록하는 파일명이 같아야한다. 임의로 수정하면 에러남.
+      // const storageRef = ref(storage, '1'); -> 에러
+      const storageRef = ref(storage, files.name);
+      const uploadFiles = uploadBytes(storageRef, file[idx]);
       const uploadTask = uploadBytesResumable(storageRef, files);
 
       uploadTask.on(
@@ -87,14 +87,6 @@ const RegisterTodo = () => {
         },
       );
     });
-
-    // for문 안에두면 메세지가 파일갯수마다 나온다
-    // let을 쓰지않고 for문안에 넣어도 한번만 나오게 가능한지?
-    uploadFiles
-      .then(() => {
-        console.log('파일업로드 성공');
-      })
-      .catch((error) => console.log(error));
   };
 
   const saveTextFn = () => {
@@ -104,8 +96,6 @@ const RegisterTodo = () => {
     });
   };
 
-  // ref 두번째 파라미터는 업로드한 파일명과 스토리지에 등록하는 파일명이 같아야한다. 임의로 수정하면 에러남.
-  // const storageRef = ref(storage, '1'); -> 에러
   // uuid, path, imgName 저장용
   const registText = () => {
     setDoc(doc(firebaseDB, 'Test', '2'), {
@@ -115,7 +105,10 @@ const RegisterTodo = () => {
 
   return (
     <div>
-      <TodoSave ref={saveTextRef} onClick={saveTextFn} onChange={checkFile} />
+      <TodoSave
+        ref={saveTextRef}
+        onClick={saveTextFn} /* onChange={checkFile}  */
+      />
       <LinkToMain />
     </div>
   );
