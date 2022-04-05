@@ -69,6 +69,8 @@ const todoSlice = createSlice({
 
     // 성공실패 이전에 pending구간에서 로딩이 필요한 경우에 선언한다.
     loading: false,
+
+    imgDTOList: '',
   },
 
   // 동기적으로 처리할경우 reducers
@@ -76,6 +78,9 @@ const todoSlice = createSlice({
   reducers: {
     changeText: (state, action) => {
       state.text = action.payload;
+    },
+    changeImgName: (state, action) => {
+      state.imgDTOList = action.payload;
     },
   },
 
@@ -174,6 +179,6 @@ const todoSlice = createSlice({
   },
 });
 
-export const { changeText } = todoSlice.actions;
+export const { changeText, changeImgName } = todoSlice.actions;
 
 export default todoSlice.reducer;
