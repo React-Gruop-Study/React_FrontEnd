@@ -1,5 +1,5 @@
 import TodoSave from 'component/registertodo/TodoSave';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import React, { useRef } from 'react';
 import { thunkSaveTodo } from 'store/helloworld/helloworldSlice';
 import { useNavigate } from 'react-router-dom';
@@ -12,6 +12,7 @@ import {
 } from '@firebase/storage';
 import { initialize } from 'config/firebaseInit';
 import { doc, getFirestore, onSnapshot, setDoc } from 'firebase/firestore';
+import ImgPreview from 'component/registertodo/ImgPreview';
 
 const RegisterTodo = () => {
   const saveTextRef = useRef();
@@ -89,10 +90,26 @@ const RegisterTodo = () => {
     });
   };
 
+  const imgObj = useSelector((state) => state.todo.imgDTOList);
+  const obj = {};
+  const imgDTOList = Array.from(imgObj);
+  console.log(imgDTOList);
+  imgDTOList.forEach((res) => {
+    console.log(res);
+    obj.imgName = res;
+  });
+  console.log(obj);
   const saveTextFn = () => {
     const text = saveTextRef.current.value;
-    dispatch(thunkSaveTodo({ text })).then(() => {
-      navigator('/');
+    // {
+    //   "text": "123",
+    //   "imgDTOList": { "imgName": ["테크스택-001 (1).png"] }
+    // } 아래로직은 이 형태로 나온다
+    // const imgDTOList = {};
+    // imgDTOList.imgName = imgList;'
+
+    dispatch(thunkSaveTodo({ text, imgDTOList })).then(() => {
+      // navigator('/');
     });
   };
 
@@ -109,6 +126,7 @@ const RegisterTodo = () => {
         ref={saveTextRef}
         onClick={saveTextFn} /* onChange={checkFile}  */
       />
+      <ImgPreview />
       <LinkToMain />
     </div>
   );
