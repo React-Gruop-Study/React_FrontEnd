@@ -1,6 +1,6 @@
 import TodoSave from 'component/registertodo/TodoSave';
 import { useDispatch, useSelector } from 'react-redux';
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { thunkSaveTodo } from 'store/helloworld/helloworldSlice';
 import { useNavigate } from 'react-router-dom';
 import { LinkToMain } from 'component/location/LinkTo';
@@ -32,9 +32,9 @@ const RegisterTodo = () => {
   //   });
 
   // 실시간 데이터 가져오기
-  onSnapshot(doc(firebaseDB, 'Test', '2'), (res) => {
-    console.log(res.data());
-  });
+  // onSnapshot(doc(firebaseDB, 'Test', '2'), (res) => {
+  //   console.log(res.data());
+  // });
   const checkFile = (event) => {
     console.log(event.target.files);
     const file = Array.from(event.target.files);
@@ -91,14 +91,11 @@ const RegisterTodo = () => {
   };
 
   const imgObj = useSelector((state) => state.todo.imgDTOList);
-  const obj = {};
-  const imgDTOList = Array.from(imgObj);
-  console.log(imgDTOList);
-  imgDTOList.forEach((res) => {
-    console.log(res);
-    obj.imgName = res;
+  const imgObjArr = Array.from(imgObj);
+  const imgDTOList = [];
+  imgObjArr.forEach((res) => {
+    imgDTOList.push({ imgName: res });
   });
-  console.log(obj);
   const saveTextFn = () => {
     const text = saveTextRef.current.value;
     // {
