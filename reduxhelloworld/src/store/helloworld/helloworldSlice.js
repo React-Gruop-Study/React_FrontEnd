@@ -1,5 +1,11 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { deleteTodo, getHelloWorld, modifyTodo, saveTodo } from 'api/index';
+import {
+  deleteTodo,
+  getHelloWorld,
+  modifyTodo,
+  saveTodo,
+  getList,
+} from 'api/index';
 
 // 리덕스로 비동기 요청을 위하여 Thunk라는 미들웨어를 설정했다.
 // rejectWithValue는 예외사항이 발생하여 fulfilled(성공)로 가지않고 reject(실패)로 가기위해서
@@ -14,6 +20,18 @@ export const thunkGetHelloWorld = createAsyncThunk(
       // 화살표함수가 있으면 브레이스({})로 감싸야한다. 감싸지않으면 기본으로 return이 된다.
       // 성공했지만 -1의 경우 rejectWithValue를 통해 에러메세지를 던진다.
       if (res.sno === -1) return rejectWithValue('존재하지않는 sno입니다.');
+      return res;
+    } catch (e) {
+      return rejectWithValue(e.message);
+    }
+  },
+);
+
+export const thunkGetList = createAsyncThunk(
+  'getList',
+  async (page, { rejectWithValue }) => {
+    try {
+      const res = await getList(page);
       return res;
     } catch (e) {
       return rejectWithValue(e.message);
@@ -116,6 +134,23 @@ const todoSlice = createSlice({
       state.message = action.payload;
       state.loading = false;
       alert(state.message);
+    },
+
+    /**
+     * thunkGetList
+     */
+    [thunkGetList.pending]: (state, action) => {
+      console.log('thunkGetList.pending', action);
+      state.loading = true;
+    },
+    [thunkGetList.fulfilled]: (state, action) => {
+      console.log('thunkGetList.fulfilled', action);
+      state.dtoList = action.payload.dtoList;
+      state.loading = false;
+    },
+    [thunkGetList.rejected]: (state, action) => {
+      console.log('thunkGetList.rejected', action);
+      state.loading = false;
     },
 
     /**
