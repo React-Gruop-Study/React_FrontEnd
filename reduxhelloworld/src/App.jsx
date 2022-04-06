@@ -2,15 +2,29 @@ import RegisterTodo from 'page/RegisterTodo';
 import UpdateTodo from 'page/UpdateTodo';
 import HelloWorld from 'page/HelloWorld';
 import React, { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { Box, Container, ListSubheader } from '@mui/material';
+import BNB from 'common/BNB';
+import TNB from 'common/TNB';
+import 'App.css';
 
 const App = () => {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path='/' element={<HelloWorld />} />
-        <Route path='registertodo' element={<RegisterTodo />} />
-        <Route path='modifytodo' element={<UpdateTodo />} />
-      </Routes>
+      <Box sx={{ width: 360 }}>
+        <Box>
+          <TNB />
+        </Box>
+        <Box className='Content' sx={{ width: 360 }}>
+          <Routes>
+            <Route path='/' element={<HelloWorld />} />
+            <Route path='registertodo' element={<RegisterTodo />} />
+            <Route path='modifytodo' element={<UpdateTodo />} />
+          </Routes>
+        </Box>
+        <Box className='BNB'>
+          <BNB />
+        </Box>
+      </Box>
     </BrowserRouter>
   );
 };
