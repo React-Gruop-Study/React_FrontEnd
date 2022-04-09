@@ -33,14 +33,17 @@ export const LinkToRegist = () => {
   };
 
   return (
-    <IconButton
-      size='large'
-      edge='start'
-      color='inherit'
-      aria-label='menu'
-      sx={{ mr: 2 }}
-    >
-      <AddBoxIcon onClick={linkToRegistFn} />
-    </IconButton>
+    <div>
+      <IconButton
+        size='large'
+        edge='start'
+        color='inherit'
+        aria-label='menu'
+        sx={{ mr: 2 }}
+        onClick={linkToRegistFn}
+      >
+        <AddBoxIcon />
+      </IconButton>
+    </div>
   );
 };
