@@ -29,11 +29,9 @@ const FirebaseTest = () => {
   };
 
   // 실시간 데이터 가져오기
-  onSnapshot(doc(firebaseDB, 'Test', '2'), (res) => {
-    console.log(res.data());
-  });
-  let uploadFiles;
-  let storageRef;
+  // onSnapshot(doc(firebaseDB, 'Test', '2'), (res) => {
+  //   console.log(res.data());
+  // });
   const checkFile = (event) => {
     console.log(event.target.files);
     const file = Array.from(event.target.files);
@@ -45,8 +43,8 @@ const FirebaseTest = () => {
     file.forEach((files, idx) => {
       console.log(files);
       console.log(idx);
-      storageRef = ref(storage, files.name);
-      uploadFiles = uploadBytes(storageRef, file[idx]);
+      const storageRef = ref(storage, files.name);
+      const uploadFiles = uploadBytes(storageRef, file[idx]);
       const uploadTask = uploadBytesResumable(storageRef, files);
 
       uploadTask.on(
@@ -86,11 +84,11 @@ const FirebaseTest = () => {
       );
     });
 
-    uploadFiles
-      .then(() => {
-        console.log('파일업로드 성공');
-      })
-      .catch((error) => console.log(error));
+    // uploadFiles
+    //   .then(() => {
+    //     console.log('파일업로드 성공');
+    //   })
+    //   .catch((error) => console.log(error));
   };
 
   return (
@@ -104,8 +102,7 @@ const FirebaseTest = () => {
       <input type='file' onChange={checkFile} multiple />
       <img
         src='https://firebasestorage.googleapis.com/v0/b/journey-study.appspot.com/o/테크스택_및_협업툴.png?alt=media'
-        width='350'
-        height='350'
+        width='550'
       />
     </div>
   );
