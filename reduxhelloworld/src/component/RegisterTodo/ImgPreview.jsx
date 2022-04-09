@@ -4,13 +4,14 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { changeImgName } from 'store/helloworld/helloworldSlice';
 
-const ImgPreview = () => {
+const ImgPreview = ({ onChange }) => {
   const [src, setSrc] = useState([]);
   const [imgName, setImgName] = useState([]);
   const dispatch = useDispatch();
   // srcList로 담으면 onload의 비동기처리에 값이 먼저 할당되지않고 다음로직으로 넘어간다.
   // const srcList = [];
   const readMultipleImage = (input) => {
+    console.log(input.target.files);
     if (input.target.files) {
       const fileArr = Array.from(input.target.files);
       // console.log(fileArr);
@@ -79,7 +80,16 @@ const ImgPreview = () => {
   return (
     <div>
       <div>
-        <input type='file' onChange={readMultipleImage} multiple />
+        <input
+          type='file'
+          /* onChange에 두개이상의 함수가 들어가면 즉시실행함수와 이벤트인자를 직접 전달해야한다. */
+          /* 한개만 있을땐 즉시실행함수와 인자를 리액트가 알아서해준다. */
+          onChange={(e) => {
+            onChange(e);
+            readMultipleImage(e);
+          }}
+          multiple
+        />
       </div>
       <div className='imgDiv'>{imgList()}</div>
     </div>
