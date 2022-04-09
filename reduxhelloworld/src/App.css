@@ -1,11 +1,13 @@
 .Content {
-  width: 360px;
-  margin-bottom: 56px;
+  /* width: 360px; */
+  width: 100%;
+  margin-bottom: 60px;
   margin-top: 80px;
 }
 
 .BNB {
-  width: 360px;
+  /* width: 360px; */
+  width: 100%;
   position: fixed;
   bottom: 0;
 }

@@ -10,11 +10,11 @@ import 'App.css';
 const App = () => {
   return (
     <BrowserRouter>
-      <Box sx={{ width: 360 }}>
+      <Box>
         <Box>
           <TNB />
         </Box>
-        <Box className='Content' sx={{ width: 360 }}>
+        <Box className='Content'>
           <Routes>
             <Route path='/' element={<HelloWorld />} />
             <Route path='registertodo' element={<RegisterTodo />} />
