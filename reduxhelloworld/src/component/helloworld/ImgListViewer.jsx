@@ -10,7 +10,7 @@ const ImgListViewer = () => {
       dtoList && (
         <div>
           {dtoList.map((el) => (
-            <Paper elevation={3}>
+            <Paper elevation={3} key={el.sno}>
               <div key={el.sno}>
                 {el.sno}
                 <div style={{ float: 'right' }}>
@@ -18,6 +18,12 @@ const ImgListViewer = () => {
                 </div>
                 <img src={el.imgDTOList[0].path} width='350' />
                 <div> {el.text}</div>
+                <div>
+                  <button type='button'>현재 글 수정하기</button>
+                </div>
+                <div>
+                  <button type='button'>현재 글 삭제하기</button>
+                </div>
               </div>
             </Paper>
           ))}
