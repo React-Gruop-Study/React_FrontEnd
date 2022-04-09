@@ -1,11 +1,20 @@
+import {
+  getStorage,
+  ref,
+  uploadBytes,
+  uploadBytesResumable,
+} from '@firebase/storage';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import {
-  deleteTodo,
   getHelloWorld,
-  modifyTodo,
   saveTodo,
   getList,
+  modifyTodo,
+  deleteTodo,
 } from 'api/index';
+import { initialize } from 'config/firebaseInit';
+import { getFirestore } from 'firebase/firestore';
+import { useDispatch } from 'react-redux';
 
 // 리덕스로 비동기 요청을 위하여 Thunk라는 미들웨어를 설정했다.
 // rejectWithValue는 예외사항이 발생하여 fulfilled(성공)로 가지않고 reject(실패)로 가기위해서
@@ -41,9 +50,51 @@ export const thunkGetList = createAsyncThunk(
 
 export const thunkSaveTodo = createAsyncThunk(
   'saveTodo',
-  async (TestDTO, { rejectWithValue }) => {
+  async (saveData, { rejectWithValue }) => {
     try {
-      const res = await saveTodo(TestDTO);
+      const res = await saveTodo(saveData);
+      // firestore저장용
+      const firebaseDB = getFirestore(initialize);
+      // firestorage 저장용
+      const storage = getStorage(initialize);
+      const fileList = Array.from(saveData.fileList);
+
+      fileList.forEach((files, idx) => {
+        const storageRef = ref(storage, res[idx].imgName);
+        const uploadTask = uploadBytesResumable(storageRef, files);
+        uploadTask.on(
+          'state_changed',
+          (snapshot) => {
+            const progress =
+              (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            console.log(`upload is ${progress}% done`);
+            switch (snapshot.state) {
+              case 'paused':
+                return '업로드 일시중지';
+              case 'running':
+                return (
+                  progress === 100 && console.log('업로드 완료 되었습니다.')
+                );
+              default:
+                return '업로드 중 알 수 없는 에러가 발생하였습니다.';
+            }
+          },
+          (error) => {
+            switch (error.code) {
+              case 'storage/unauthorized':
+                return '권한이 없습니다.';
+              case 'storage/canceled':
+                return '업로드가 취소되었습니다.';
+              case 'storage/unknown':
+                // Unknown error occurred, inspect error.serverResponse 서버쪽 오류일수있다.
+                return '서버 오류로 취소되었습니다.';
+              default:
+                return '알수없는 오류로 취소되었습니다.';
+            } // end switch
+          }, // end error
+        ); // end uploadTask.on
+      }); // end forEach
+
       return res;
     } catch (e) {
       return rejectWithValue(e.message);
@@ -81,6 +132,7 @@ const todoSlice = createSlice({
   initialState: {
     sno: 0,
     text: 'HELLO WORLD.',
+    saveResImgList: [],
 
     // reject를 위해서 message처리를 했다.
     message: '',
@@ -99,6 +151,9 @@ const todoSlice = createSlice({
     },
     changeImgName: (state, action) => {
       state.imgDTOList = action.payload;
+    },
+    scsMsg: (state, action) => {
+      state.msg = action.payload;
     },
   },
 
@@ -162,8 +217,8 @@ const todoSlice = createSlice({
     },
     [thunkSaveTodo.fulfilled]: (state, action) => {
       console.log('thunkSaveTodo.fulfilled', action);
-      alert(`sno ${action.payload} 번으로 등록 되었습니다.`);
       state.loading = false;
+      state.saveResImgList = action.payload;
     },
     [thunkSaveTodo.rejected]: (state, action) => {
       console.log('thunkSaveTodo.rejected', action);

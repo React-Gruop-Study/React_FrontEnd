@@ -19,6 +19,7 @@ const RegisterTodo = () => {
   const dispatch = useDispatch();
   const navigator = useNavigate();
 
+  const [fileList, setFileList] = useState([]);
   const firebaseDB = getFirestore(initialize);
   const storage = getStorage(initialize);
 
@@ -38,57 +39,14 @@ const RegisterTodo = () => {
   const checkFile = (event) => {
     console.log(event.target.files);
     const file = Array.from(event.target.files);
-    // ref 두번째 파라미터는 업로드한 파일명과 스토리지에 등록하는 파일명이 같아야한다. 임의로 수정하면 에러남.
-    // const storageRef = ref(storage, '1'); -> 에러
+    setFileList(file);
+    // console.log(Array.isArray(file), file);
+  }; // end checkFile
 
-    // eslint-disable-next-line array-callback-return
-    console.log(Array.isArray(file), file);
-    file.forEach((files, idx) => {
-      console.log(files);
-      console.log(idx);
-      // ref 두번째 파라미터는 업로드한 파일명과 스토리지에 등록하는 파일명이 같아야한다. 임의로 수정하면 에러남.
-      // const storageRef = ref(storage, '1'); -> 에러
-      const storageRef = ref(storage, files.name);
-      const uploadFiles = uploadBytes(storageRef, file[idx]);
-      const uploadTask = uploadBytesResumable(storageRef, files);
-
-      uploadTask.on(
-        'state_changed',
-        (snapshot) => {
-          const progress =
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          console.log(`upload is ${progress}% done`);
-          switch (snapshot.state) {
-            case 'paused':
-              console.log('Upload is paused');
-              break;
-            case 'running':
-              console.log('Upload is running');
-              break;
-            default:
-              console.log('error');
-              break;
-          }
-        },
-        (error) => {
-          switch (error.code) {
-            case 'storage/unauthorized':
-              console.log('권한이 없습니다.');
-              break;
-            case 'storage/canceled':
-              console.log('업로드가 취소되었습니다.');
-              break;
-            case 'storage/unknown':
-              // Unknown error occurred, inspect error.serverResponse 서버쪽 오류일수있다.
-              console.log('알수없는 오류로 취소되었습니다.');
-              break;
-            default:
-              console.log('실패했습니다.');
-          }
-        },
-      );
-    });
-  };
+  /* setState 비동기처리는 무조건 useEffect */
+  /* useEffect(() => {
+    console.log(fileList);
+  }, [fileList]); */
 
   const imgObj = useSelector((state) => state.todo.imgDTOList);
   const imgObjArr = Array.from(imgObj);
@@ -96,7 +54,8 @@ const RegisterTodo = () => {
   imgObjArr.forEach((res) => {
     imgDTOList.push({ imgName: res });
   });
-  const saveTextFn = () => {
+
+  const saveTextFn = async () => {
     const text = saveTextRef.current.value;
     // {
     //   "text": "123",
@@ -104,10 +63,17 @@ const RegisterTodo = () => {
     // } 아래로직은 이 형태로 나온다
     // const imgDTOList = {};
     // imgDTOList.imgName = imgList;'
+    try {
+      await dispatch(thunkSaveTodo({ text, imgDTOList, fileList })).then(
+        (res) => {
+          console.log(res);
+        },
+      );
+    } catch (rejectedValueOrSerializedError) {
+      console.log(rejectedValueOrSerializedError);
+    }
 
-    dispatch(thunkSaveTodo({ text, imgDTOList })).then(() => {
-      // navigator('/');
-    });
+    // navigator('/');
   };
 
   // uuid, path, imgName 저장용
@@ -119,11 +85,8 @@ const RegisterTodo = () => {
 
   return (
     <div>
-      <TodoSave
-        ref={saveTextRef}
-        onClick={saveTextFn} /* onChange={checkFile}  */
-      />
-      <ImgPreview />
+      <TodoSave ref={saveTextRef} onClick={saveTextFn} />
+      <ImgPreview onChange={checkFile} />
       <LinkToMain />
     </div>
   );
