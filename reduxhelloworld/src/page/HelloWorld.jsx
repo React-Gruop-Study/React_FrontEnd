@@ -40,27 +40,29 @@ const HelloWorld = () => {
   }, []);
 
   // 각 api호출마다 하나의 함수로 분리한다.
-  const getSnoFn = () => {
+  const getSnoFn = async () => {
     // dispatch는 fufilled시 then이 가능하다.
-    dispatch(thunkGetHelloWorld(Number(snoRef.current.value))).then(() => {
-      // navigator('/chicken');
-    });
+    await dispatch(thunkGetHelloWorld(Number(snoRef.current.value))).then(
+      () => {
+        // navigator('/chicken');
+      },
+    );
     // catch는 rejected에서 관리한다.
   };
 
-  const modifySnoFn = () => {
+  const modifySnoFn = async () => {
     navigator('/modifytodo');
   };
 
-  const deleteSnoFn = () => {
-    dispatch(thunkDeleteTodo(Number(deleteSnoNum))).then(() => {
+  const deleteSnoFn = async () => {
+    await dispatch(thunkDeleteTodo(Number(deleteSnoNum))).then(() => {
       navigator('/');
     });
   };
 
   // snoinput에서 클릭하여 조회하는 이벤트를 상위로올려서 함수를 파라미터로 전달한다.
   return (
-    <Box sx={{ width: 360, overflow: 'hidden', overflowY: 'scroll' }}>
+    <Box sx={{ overflow: 'hidden', overflowY: 'scroll' }}>
       {/* 검색기능 api작업으로 비활성화<SnoInput ref={snoRef} onClick={getSnoFn} /> */}
       <ImgListViewer />
       <ResViewer />
