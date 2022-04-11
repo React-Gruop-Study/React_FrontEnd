@@ -54,18 +54,18 @@ const HelloWorld = () => {
     navigator('/modifytodo');
   };
 
-  const deleteSnoFn = async () => {
-    await dispatch(thunkDeleteTodo(Number(deleteSnoNum))).then(() => {
-      navigator('/');
+  const deleteSnoFn = async (sno) => {
+    await dispatch(thunkDeleteTodo(Number(sno))).then(() => {
+      window.location.replace('/');
     });
   };
 
   // snoinput에서 클릭하여 조회하는 이벤트를 상위로올려서 함수를 파라미터로 전달한다.
   return (
-    <Box sx={{ overflow: 'hidden', overflowY: 'scroll' }}>
+    <Box>
       {/* 검색기능 api작업으로 비활성화<SnoInput ref={snoRef} onClick={getSnoFn} /> */}
-      <ImgListViewer />
-      <ResViewer />
+      <ImgListViewer onClick={deleteSnoFn} />
+      {/* <ResViewer />
       <div>
         <button type='button' onClick={modifySnoFn}>
           현재 글 수정하기
@@ -75,7 +75,7 @@ const HelloWorld = () => {
         <button type='button' onClick={deleteSnoFn}>
           현재 글 삭제하기
         </button>
-      </div>
+      </div> */}
 
       {/* <FirebaseTest /> */}
     </Box>
