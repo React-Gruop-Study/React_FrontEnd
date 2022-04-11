@@ -1,4 +1,4 @@
-import { IconButton } from '@mui/material';
+import { IconButton, Typography } from '@mui/material';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import AddBoxIcon from '@mui/icons-material/AddBox';
@@ -15,9 +15,7 @@ export const LinkToMain = () => {
 
   return (
     <div>
-      <button type='button' onClick={linkToMainFn}>
-        목록으로 돌아가기
-      </button>
+      <Typography onClick={linkToMainFn}>목록으로돌아가기</Typography>
     </div>
   );
 };
