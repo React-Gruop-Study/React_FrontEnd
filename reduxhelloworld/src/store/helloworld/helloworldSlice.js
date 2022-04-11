@@ -1,9 +1,4 @@
-import {
-  getStorage,
-  ref,
-  uploadBytes,
-  uploadBytesResumable,
-} from '@firebase/storage';
+import { getStorage, ref, uploadBytesResumable } from '@firebase/storage';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import {
   getHelloWorld,
@@ -11,10 +6,10 @@ import {
   getList,
   modifyTodo,
   deleteTodo,
+  getTextWithImg,
 } from 'api/index';
 import { initialize } from 'config/firebaseInit';
 import { getFirestore } from 'firebase/firestore';
-import { useDispatch } from 'react-redux';
 
 // 리덕스로 비동기 요청을 위하여 Thunk라는 미들웨어를 설정했다.
 // rejectWithValue는 예외사항이 발생하여 fulfilled(성공)로 가지않고 reject(실패)로 가기위해서
@@ -48,6 +43,18 @@ export const thunkGetList = createAsyncThunk(
   },
 );
 
+export const thunkGetTextWithImg = createAsyncThunk(
+  'getTextWithImg',
+  async (sno, { rejectWithValue }) => {
+    try {
+      const res = await getTextWithImg(sno);
+      return res;
+    } catch (e) {
+      return rejectWithValue(e.message);
+    }
+  },
+);
+
 export const thunkSaveTodo = createAsyncThunk(
   'saveTodo',
   async (saveData, { rejectWithValue }) => {
@@ -58,41 +65,49 @@ export const thunkSaveTodo = createAsyncThunk(
       // firestorage 저장용
       const storage = getStorage(initialize);
       const fileList = Array.from(saveData.fileList);
-
+      const options = {
+        maxSizeMB: 1,
+        maxWidthOrHeight: 400,
+      };
       fileList.forEach((files, idx) => {
-        const storageRef = ref(storage, res[idx].imgName);
-        const uploadTask = uploadBytesResumable(storageRef, files);
-        uploadTask.on(
-          'state_changed',
-          (snapshot) => {
-            const progress =
-              (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            console.log(`upload is ${progress}% done`);
-            switch (snapshot.state) {
-              case 'paused':
-                return '업로드 일시중지';
-              case 'running':
-                return (
-                  progress === 100 && console.log('업로드 완료 되었습니다.')
-                );
-              default:
-                return '업로드 중 알 수 없는 에러가 발생하였습니다.';
-            }
-          },
-          (error) => {
-            switch (error.code) {
-              case 'storage/unauthorized':
-                return '권한이 없습니다.';
-              case 'storage/canceled':
-                return '업로드가 취소되었습니다.';
-              case 'storage/unknown':
-                // Unknown error occurred, inspect error.serverResponse 서버쪽 오류일수있다.
-                return '서버 오류로 취소되었습니다.';
-              default:
-                return '알수없는 오류로 취소되었습니다.';
-            } // end switch
-          }, // end error
-        ); // end uploadTask.on
+        try {
+          const storageRef = ref(storage, res[idx].imgName);
+          const uploadTask = uploadBytesResumable(storageRef, files);
+          console.log(files);
+          uploadTask.on(
+            'state_changed',
+            (snapshot) => {
+              const progress =
+                (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+              console.log(`upload is ${progress}% done`);
+              switch (snapshot.state) {
+                case 'paused':
+                  return '업로드 일시중지';
+                case 'running':
+                  return (
+                    progress === 100 && console.log('업로드 완료 되었습니다.')
+                  );
+                default:
+                  return '업로드 중 알 수 없는 에러가 발생하였습니다.';
+              }
+            },
+            (error) => {
+              switch (error.code) {
+                case 'storage/unauthorized':
+                  return '권한이 없습니다.';
+                case 'storage/canceled':
+                  return '업로드가 취소되었습니다.';
+                case 'storage/unknown':
+                  // Unknown error occurred, inspect error.serverResponse 서버쪽 오류일수있다.
+                  return '서버 오류로 취소되었습니다.';
+                default:
+                  return '알수없는 오류로 취소되었습니다.';
+              } // end switch
+            }, // end error
+          ); // end uploadTask.on
+        } catch (error) {
+          console.log(error);
+        }
       }); // end forEach
 
       return res;
@@ -141,6 +156,7 @@ const todoSlice = createSlice({
     loading: false,
 
     imgDTOList: '',
+    modifyList: '',
   },
 
   // 동기적으로 처리할경우 reducers
@@ -152,9 +168,9 @@ const todoSlice = createSlice({
     changeImgName: (state, action) => {
       state.imgDTOList = action.payload;
     },
-    scsMsg: (state, action) => {
-      state.msg = action.payload;
-    },
+    // scsMsg: (state, action) => {
+    //   state.msg = action.payload;
+    // },
   },
 
   // 비동기로 처리하는경우 extraReducers
@@ -205,6 +221,23 @@ const todoSlice = createSlice({
     },
     [thunkGetList.rejected]: (state, action) => {
       console.log('thunkGetList.rejected', action);
+      state.loading = false;
+    },
+
+    /**
+     * thunkGetTextWithImg
+     */
+    [thunkGetTextWithImg.pending]: (state, action) => {
+      console.log('thunkGetTextWithImg.pending', action);
+      state.loading = true;
+    },
+    [thunkGetTextWithImg.fulfilled]: (state, action) => {
+      console.log('thunkGetTextWithImg.fulfilled', action);
+      state.modifyList = action.payload;
+      state.loading = false;
+    },
+    [thunkGetTextWithImg.rejected]: (state, action) => {
+      console.log('thunkGetTextWithImg.rejected', action);
       state.loading = false;
     },
 

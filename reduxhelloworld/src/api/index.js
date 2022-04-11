@@ -27,8 +27,17 @@ export const getHelloWorld = async (sno) => {
   return res.data;
 };
 
+export const getList = async (page) => {
+  const res = await api.get(`/list`);
+  return res.data;
+};
+
+export const getTextWithImg = async (sno) => {
+  const res = await api.get(`/read/${sno}`);
+  return res.data;
+};
+
 export const saveTodo = async ({ text, imgDTOList }) => {
-  console.log(`${text}+${imgDTOList}`);
   const res = await api.post(`/todo`, JSON.stringify({ text, imgDTOList }));
   return res.data;
 };

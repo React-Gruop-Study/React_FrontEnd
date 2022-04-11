@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import { ImageList, ImageListItem } from '@mui/material';
+import { ImageList, ImageListItem, Paper } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { changeImgName } from 'store/helloworld/helloworldSlice';
@@ -53,7 +53,7 @@ const ImgPreview = ({ onChange }) => {
     // console.log(imgName);
     return (
       !!src.length && (
-        <ImageList sx={{ width: 1200 }} cols={3}>
+        <ImageList sx={{ width: 375 }} cols={1}>
           {src.map((value, idx) => (
             // eslint-disable-next-line react/no-array-index-key
             <ImageListItem key={`${value.substring(0, 10)}+${idx}`}>
@@ -82,6 +82,7 @@ const ImgPreview = ({ onChange }) => {
       <div>
         <input
           type='file'
+          accept='image/*'
           /* onChange에 두개이상의 함수가 들어가면 즉시실행함수와 이벤트인자를 직접 전달해야한다. */
           /* 한개만 있을땐 즉시실행함수와 인자를 리액트가 알아서해준다. */
           onChange={(e) => {

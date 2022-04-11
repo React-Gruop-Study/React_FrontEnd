@@ -1,6 +1,6 @@
 import TodoSave from 'component/registertodo/TodoSave';
 import { useDispatch, useSelector } from 'react-redux';
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { thunkSaveTodo } from 'store/helloworld/helloworldSlice';
 import { useNavigate } from 'react-router-dom';
 import { LinkToMain } from 'component/location/LinkTo';
@@ -21,7 +21,6 @@ const RegisterTodo = () => {
 
   const [fileList, setFileList] = useState([]);
   const firebaseDB = getFirestore(initialize);
-  const storage = getStorage(initialize);
 
   // import한 firebase/firestore에서 db.collection은 되지않는다.
   // db.collection('Test')
@@ -36,6 +35,7 @@ const RegisterTodo = () => {
   // onSnapshot(doc(firebaseDB, 'Test', '2'), (res) => {
   //   console.log(res.data());
   // });
+
   const checkFile = (event) => {
     console.log(event.target.files);
     const file = Array.from(event.target.files);
@@ -67,13 +67,12 @@ const RegisterTodo = () => {
       await dispatch(thunkSaveTodo({ text, imgDTOList, fileList })).then(
         (res) => {
           console.log(res);
+          // navigator('/');
         },
       );
     } catch (rejectedValueOrSerializedError) {
       console.log(rejectedValueOrSerializedError);
     }
-
-    // navigator('/');
   };
 
   // uuid, path, imgName 저장용
@@ -87,7 +86,7 @@ const RegisterTodo = () => {
     <div>
       <TodoSave ref={saveTextRef} onClick={saveTextFn} />
       <ImgPreview onChange={checkFile} />
-      <LinkToMain />
+      {/* <LinkToMain /> */}
     </div>
   );
 };
