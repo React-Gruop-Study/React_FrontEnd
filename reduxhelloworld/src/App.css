@@ -1,22 +1,65 @@
-.Content {
-  /* width: 360px; */
+/* reset */
+html,
+body {
+  overflow: hidden;
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background-color: beige;
+  background-image: url('https://www.zooseyo.or.kr/pet_care/photo/1515637807_28284100.jpg');
+}
+
+/* //reset */
+/* layout */
+#root {
+  width: 375px;
+  height: 100%;
+  margin: 0 auto;
+}
+
+#root .MainContent {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  margin: 0 auto;
+}
+
+#root .Content {
+  overflow: auto;
   width: 100%;
-  margin-bottom: 60px;
-  margin-top: 80px;
+  height: 100%;
+  background-color: floralwhite;
 }
 
-.BNB {
-  /* width: 360px; */
-  width: 100%;
-  position: fixed;
-  bottom: 0;
+/* //layout */
+
+/* PC(1024 ~) */
+
+/* Tablet(768 - 1024) */
+@media screen and (max-width: 1024px) {
+  #root {
+    width: 100%;
+  }
+}
+@media screen and (max-width: 768px) {
+  #root {
+    width: 375px;
+  }
 }
 
-.Container {
-  width: 360px;
+/* Mobile(375 - 450) */
+@media screen and (max-width: 450px) {
+  #root {
+    width: 100%;
+  }
 }
 
-.TNB {
-  width: 360px;
-  position: fixed;
+/* Mobile(375) */
+@media screen and (max-width: 375px) {
+  #root {
+    width: 100%;
+    min-width: 320px;
+  }
 }

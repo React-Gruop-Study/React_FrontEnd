@@ -4,21 +4,30 @@ import HelloWorld from 'page/HelloWorld';
 import React, { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Box, Container, ListSubheader } from '@mui/material';
 import BNB from 'common/BNB';
-import TNB from 'common/TNB';
+import GNB from 'common/GNB';
 import 'App.css';
+import ImgTest from './page/ImgTest';
 
 const App = () => {
   return (
     <BrowserRouter>
-      <Box>
+      <Box className='MainContent'>
         <Box>
-          <TNB />
+          <GNB />
         </Box>
-        <Box className='Content'>
+        <Box
+          className='Content'
+          // sx={{
+          //   height: 'calc(100vh - 110px)',
+          //   overflow: 'auto',
+          //   overflowY: 'scroll',
+          // }}
+        >
           <Routes>
             <Route path='/' element={<HelloWorld />} />
             <Route path='registertodo' element={<RegisterTodo />} />
             <Route path='modifytodo' element={<UpdateTodo />} />
+            <Route path='imgtest' element={<ImgTest />} />
           </Routes>
         </Box>
         <Box className='BNB'>
