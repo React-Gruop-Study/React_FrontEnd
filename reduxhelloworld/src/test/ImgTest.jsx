@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import imageCompression from 'browser-image-compression';
-import { convertURLtoFile } from 'urltofileobj/urlToFileObject';
+import { convertURLtoFile } from 'test/urltofileobj/urlToFileObject';
 import { getStorage, ref, uploadBytesResumable } from '@firebase/storage';
 import { initialize } from 'config/firebaseInit';
 
@@ -46,10 +46,19 @@ const ImgTest = () => {
         id='profile_img_upload'
         onChange={handleFileOnChange}
       />
-      <a href={fileUrl} download='안녕하세요'>
-        asdasd
-      </a>
-      <img className='top_bar_profile_img' src={fileUrl} alt='profile_img' />
+      <div>
+        <a href={fileUrl} download='안녕하세요'>
+          압축된 이미지 다운로드
+        </a>
+      </div>
+      <div>
+        <img
+          className='top_bar_profile_img'
+          src={fileUrl}
+          alt='profile_img'
+          style={{ width: '375px' }}
+        />
+      </div>
     </>
   );
 };

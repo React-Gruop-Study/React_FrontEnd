@@ -1,12 +1,17 @@
-import { Box } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import ImgListViewer from 'component/helloworld/ImgListViewer';
 import ResViewer from 'component/helloworld/ResViewer';
 import SnoInput from 'component/helloworld/SnoInput';
-import { LinkToRegist } from 'component/location/LinkTo';
+import {
+  LinkToImgConvert,
+  LinkToImgSlice,
+  LinkToRegist,
+} from 'component/location/LinkTo';
 import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import {
+  changeSno,
   thunkDeleteTodo,
   thunkGetHelloWorld,
   thunkGetList,
@@ -50,21 +55,25 @@ const HelloWorld = () => {
     // catch는 rejected에서 관리한다.
   };
 
-  const modifySnoFn = async () => {
-    navigator('/modifytodo');
-  };
+  // ImgListViewer로 이동
+  // const deleteSnoFn = async (sno) => {
+  //   await dispatch(thunkDeleteTodo(Number(sno))).then(() => {
+  //     window.location.replace('/');
+  //   });
+  // };
 
-  const deleteSnoFn = async (sno) => {
-    await dispatch(thunkDeleteTodo(Number(sno))).then(() => {
-      window.location.replace('/');
-    });
+  const modifySnoFn = async (sno) => {
+    dispatch(changeSno(sno));
+    navigator('/modifytodo');
   };
 
   // snoinput에서 클릭하여 조회하는 이벤트를 상위로올려서 함수를 파라미터로 전달한다.
   return (
     <Box>
-      {/* 검색기능 api작업으로 비활성화<SnoInput ref={snoRef} onClick={getSnoFn} /> */}
-      <ImgListViewer onClick={deleteSnoFn} />
+      <LinkToImgConvert />
+      <LinkToImgSlice />
+      {/* sno검색기능 api작업으로 비활성화<SnoInput ref={snoRef} onClick={getSnoFn} /> */}
+      <ImgListViewer onClick={modifySnoFn} />
       {/* <ResViewer />
       <div>
         <button type='button' onClick={modifySnoFn}>

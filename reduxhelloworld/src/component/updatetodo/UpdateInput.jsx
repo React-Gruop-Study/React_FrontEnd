@@ -6,7 +6,7 @@ import { thunkGetTextWithImg } from 'store/helloworld/helloworldSlice';
 const UpdateViewer = forwardRef(({ onClick }, ref) => {
   const sno = useSelector((state) => state.todo.sno);
   const text = useSelector((state) => state.todo.text);
-  const modifytList = useSelector((state) => state.todo);
+  const modifyList = useSelector((state) => state.todo);
 
   const [sno1, setSno1] = useState();
   const [text1, setText1] = useState();
@@ -15,24 +15,27 @@ const UpdateViewer = forwardRef(({ onClick }, ref) => {
   const dispatch = useDispatch();
 
   const getTextWithImg = () => {
-    const snoNum = 7569;
+    const snoNum = sno;
     dispatch(thunkGetTextWithImg(snoNum)).then((res) => {
       setSno1(res.payload[0][0].sno);
       setText1(res.payload[0][0].text);
       setSrc(res.payload[0][1].path);
+      console.log(res);
+      console.log(modifyList);
     });
   };
 
   useEffect(() => {
     getTextWithImg();
-    console.log(modifytList);
+    console.log(modifyList);
   }, []);
   return (
     <div>
       <div>
-        sno : <input type='text' value={sno1} readOnly />
+        sno : <input type='text' value={sno1 || ''} readOnly />
       </div>
       <div>
+        {/* ref를 쓰려면 defalutValue로 선언해야한다 */}
         변경할 값 : <input type='text' defaultValue={text1} ref={ref} />
       </div>
       <button type='button' onClick={onClick}>
