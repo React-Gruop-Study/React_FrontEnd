@@ -1,8 +1,12 @@
-/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable react/no-array-index-key */
+/* eslint-disable react/jsx-props-no-spreading */
 import { ImageList, ImageListItem, Paper } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { changeImgName } from 'store/helloworld/helloworldSlice';
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 
 const ImgPreview = ({ onChange }) => {
   const [src, setSrc] = useState([]);
@@ -47,20 +51,38 @@ const ImgPreview = ({ onChange }) => {
   const deleteImg = (event) => {
     console.log(event);
   };
-
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    centerMode: true,
+    centerPadding: '0px',
+  };
   const imgList = () => {
     // console.log(src);
     // console.log(imgName);
     return (
       !!src.length && (
-        <ImageList sx={{ width: 375 }} cols={1}>
+        <Slider {...settings}>
           {src.map((value, idx) => (
-            // eslint-disable-next-line react/no-array-index-key
-            <ImageListItem key={`${value.substring(0, 10)}+${idx}`}>
-              <img src={`${value}`} widthloading='lazy' />
-            </ImageListItem>
+            <img src={`${value}`} widthloading='lazy' />
           ))}
-        </ImageList>
+        </Slider>
+        //
+        // 아래 로직은 세로로 나온다 새로 짠 로직은 슬라이스가 가능한 로직
+        //
+        // <ImageList sx={{ width: 375 }} cols={1}>
+        //   <Slider {...settings}>
+        //     {src.map((value, idx) => (
+        //       // eslint-disable-next-line react/no-array-index-key
+        //       <ImageListItem key={`${value.substring(0, 10)}+${idx}`}>
+        //         <img src={`${value}`} widthloading='lazy' />
+        //       </ImageListItem>
+        //     ))}
+        //   </Slider>
+        // </ImageList>
         // <div>
         //   {src.map((value, idx) => (
         //     // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
