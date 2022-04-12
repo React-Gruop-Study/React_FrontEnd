@@ -1,10 +1,10 @@
-import { IconButton, Typography } from '@mui/material';
+import { Button, IconButton, Typography } from '@mui/material';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 
 /**
- * 메인으로 가는 함수
+ * 메인으로 가는 링크
  */
 export const LinkToMain = () => {
   const navigator = useNavigate();
@@ -21,7 +21,7 @@ export const LinkToMain = () => {
 };
 
 /**
- * 글쓰기로 가는 함수
+ * 글쓰기로 가는 링크
  */
 export const LinkToRegist = () => {
   const navigator = useNavigate();
@@ -43,5 +43,39 @@ export const LinkToRegist = () => {
         <AddBoxIcon />
       </IconButton>
     </div>
+  );
+};
+
+/**
+ * 이미지압축테스트로 가는 링크
+ */
+export const LinkToImgConvert = () => {
+  const navigator = useNavigate();
+
+  const linkToRegistFn = () => {
+    navigator('/imgtest');
+  };
+
+  return (
+    <Button type='button' onClick={linkToRegistFn}>
+      이미지압축테스트
+    </Button>
+  );
+};
+
+/**
+ * 이미지슬라이스테스트로 가는 링크
+ */
+export const LinkToImgSlice = () => {
+  const navigator = useNavigate();
+
+  const linkToRegistFn = () => {
+    navigator('/slicktest');
+  };
+
+  return (
+    <Button type='button' onClick={linkToRegistFn}>
+      이미지슬라이스테스트
+    </Button>
   );
 };
