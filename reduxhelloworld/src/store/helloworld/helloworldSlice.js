@@ -162,6 +162,9 @@ const todoSlice = createSlice({
   // 동기적으로 처리할경우 reducers
   // 비동기로 처리하지 않는경우.
   reducers: {
+    changeSno: (state, action) => {
+      state.sno = action.payload;
+    },
     changeText: (state, action) => {
       state.text = action.payload;
     },
@@ -302,6 +305,6 @@ const todoSlice = createSlice({
   },
 });
 
-export const { changeText, changeImgName } = todoSlice.actions;
+export const { changeSno, changeText, changeImgName } = todoSlice.actions;
 
 export default todoSlice.reducer;
