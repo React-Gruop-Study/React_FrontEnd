@@ -6,7 +6,8 @@ import { Box, Container, ListSubheader } from '@mui/material';
 import BNB from 'common/BNB';
 import GNB from 'common/GNB';
 import 'App.css';
-import ImgTest from './page/ImgTest';
+import ImgTest from './test/ImgTest';
+import ReactSlick from './test/ReactSlick';
 
 const App = () => {
   return (
@@ -28,6 +29,7 @@ const App = () => {
             <Route path='registertodo' element={<RegisterTodo />} />
             <Route path='modifytodo' element={<UpdateTodo />} />
             <Route path='imgtest' element={<ImgTest />} />
+            <Route path='slicktest' element={<ReactSlick />} />
           </Routes>
         </Box>
         <Box className='BNB'>
