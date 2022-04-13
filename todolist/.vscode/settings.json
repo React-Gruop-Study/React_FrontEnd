@@ -1,0 +1,5 @@
+{
+  "svn.ignoreMissingSvnWarning": true,
+  "prettier.singleQuote": true,
+  "prettier.jsxSingleQuote": true
+}
