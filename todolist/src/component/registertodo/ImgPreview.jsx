@@ -1,11 +1,12 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import { ImageList, ImageListItem, Paper } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { changeImgName } from 'store/helloworld/helloworldSlice';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import { changeImgName } from 'store/todo/todoReducer';
+import { Button } from '@mui/material';
+import { v4 as uuidv4 } from 'uuid';
 
 const ImgPreview = ({ onChange }) => {
   const [src, setSrc] = useState([]);
@@ -44,7 +45,7 @@ const ImgPreview = ({ onChange }) => {
       !!src.length && (
         <Slider {...settings}>
           {src.map((value, idx) => (
-            <img src={`${value}`} widthloading='lazy' />
+            <img key={uuidv4()} src={`${value}`} widthloading='lazy' alt='' />
           ))}
         </Slider>
       )
@@ -54,15 +55,17 @@ const ImgPreview = ({ onChange }) => {
   return (
     <div>
       <div>
-        <input
-          type='file'
-          accept='image/*'
-          onChange={(e) => {
-            onChange(e);
-            readMultipleImage(e);
-          }}
-          multiple
-        />
+        <Button variant='outlined' component='label' style={{ height: '56px' }}>
+          <input
+            type='file'
+            accept='image/*'
+            onChange={(e) => {
+              onChange(e);
+              readMultipleImage(e);
+            }}
+            multiple
+          />
+        </Button>
       </div>
       <div className='imgDiv'>{imgList()}</div>
     </div>

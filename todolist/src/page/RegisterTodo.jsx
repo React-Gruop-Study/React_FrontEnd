@@ -1,15 +1,8 @@
 import TodoSave from 'component/registertodo/TodoSave';
 import { useDispatch, useSelector } from 'react-redux';
-import React, { useRef, useState, useEffect } from 'react';
-import { thunkSaveTodo } from 'store/helloworld/helloworldSlice';
+import React, { useRef, useState } from 'react';
+import { thunkSaveTodo } from 'store/todo/todoAsyncthunk';
 import { useNavigate } from 'react-router-dom';
-import { LinkToMain } from 'component/location/LinkTo';
-import {
-  getStorage,
-  ref,
-  uploadBytes,
-  uploadBytesResumable,
-} from '@firebase/storage';
 import { initialize } from 'config/firebaseInit';
 import { doc, getFirestore, onSnapshot, setDoc } from 'firebase/firestore';
 import ImgPreview from 'component/registertodo/ImgPreview';
@@ -18,7 +11,6 @@ const RegisterTodo = () => {
   const saveTextRef = useRef();
   const dispatch = useDispatch();
   const navigator = useNavigate();
-
   const [fileList, setFileList] = useState([]);
   const firebaseDB = getFirestore(initialize);
 
@@ -35,12 +27,15 @@ const RegisterTodo = () => {
     imgDTOList.push({ imgName: res });
   });
 
+  const errMsg = useSelector((state) => state.todo.errMsg);
   const saveTextFn = async () => {
     const text = saveTextRef.current.value;
     try {
-      await dispatch(thunkSaveTodo({ text, imgDTOList, fileList }));
+      await dispatch(thunkSaveTodo({ text, imgDTOList, fileList })).then(() => {
+        alert(errMsg);
+      });
     } catch (rejectedValueOrSerializedError) {
-      console.log(rejectedValueOrSerializedError);
+      alert(rejectedValueOrSerializedError);
     }
   };
 

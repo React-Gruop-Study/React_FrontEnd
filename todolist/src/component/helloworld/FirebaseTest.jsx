@@ -64,6 +64,7 @@ const FirebaseTest = () => {
       <img
         src='https://firebasestorage.googleapis.com/v0/b/journey-study.appspot.com/o/테크스택_및_협업툴.png?alt=media'
         width='550'
+        alt=''
       />
     </div>
   );

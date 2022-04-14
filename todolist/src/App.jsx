@@ -3,11 +3,13 @@ import UpdateTodo from 'page/UpdateTodo';
 import HelloWorld from 'page/HelloWorld';
 import React, { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Box, Container, ListSubheader } from '@mui/material';
-import BNB from 'common/BNB';
-import GNB from 'common/GNB';
+import BNB from 'common/navbar/BNB';
+import GNB from 'common/navbar/GNB';
 import 'App.css';
 import ImgTest from './test/ImgTest';
 import ReactSlick from './test/ReactSlick';
+import ModalTest from './test/ModalTest';
+import TextFieldTest from './test/TextFieldTest';
 
 const App = () => {
   return (
@@ -28,8 +30,11 @@ const App = () => {
             <Route path='/' element={<HelloWorld />} />
             <Route path='registertodo' element={<RegisterTodo />} />
             <Route path='modifytodo' element={<UpdateTodo />} />
+            {/* 밑으로 테스트하는 화면들 */}
             <Route path='imgtest' element={<ImgTest />} />
             <Route path='slicktest' element={<ReactSlick />} />
+            <Route path='modaltest' element={<ModalTest />} />
+            <Route path='textfieldtest' element={<TextFieldTest />} />
           </Routes>
         </Box>
         <Box className='BNB'>

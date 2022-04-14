@@ -6,11 +6,6 @@ const api = axios.create({
   headers: { 'Content-Type': `application/json` },
 });
 
-export const getHelloWorld = async (sno) => {
-  const res = await api.get(`/helloworld/${sno}`);
-  return res.data;
-};
-
 export const getList = async (page) => {
   const res = await api.get(`/list`);
   return res.data;

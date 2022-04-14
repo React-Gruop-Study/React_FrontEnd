@@ -57,7 +57,7 @@ export const LinkToImgConvert = () => {
   };
 
   return (
-    <Button type='button' onClick={linkToRegistFn}>
+    <Button type='button' variant='outlined' onClick={linkToRegistFn}>
       이미지압축테스트
     </Button>
   );
@@ -74,8 +74,42 @@ export const LinkToImgSlice = () => {
   };
 
   return (
-    <Button type='button' onClick={linkToRegistFn}>
+    <Button type='button' variant='outlined' onClick={linkToRegistFn}>
       이미지슬라이스테스트
+    </Button>
+  );
+};
+
+/**
+ * 모달테스트로 가는 링크
+ */
+export const LinkToModal = () => {
+  const navigator = useNavigate();
+
+  const linkToRegistFn = () => {
+    navigator('/modaltest');
+  };
+
+  return (
+    <Button type='button' variant='outlined' onClick={linkToRegistFn}>
+      모달테스트
+    </Button>
+  );
+};
+
+/**
+ * 인풋태그테스트로 가는 링크
+ */
+export const LinkToTextFieldTest = () => {
+  const navigator = useNavigate();
+
+  const linkToRegistFn = () => {
+    navigator('/textfieldtest');
+  };
+
+  return (
+    <Button type='button' variant='outlined' onClick={linkToRegistFn}>
+      인풋텍스트 테스트
     </Button>
   );
 };
