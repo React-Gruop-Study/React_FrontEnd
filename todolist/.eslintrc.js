@@ -33,7 +33,5 @@ module.exports = {
     'import/no-cycle': 'off',
     // 사용하지 않는 변수가 있어도 구동이 되게함
     'no-unused-vars': 'off',
-    // input file태그에 alt가 없어도 동작가능하게 함
-    // 'jsx-a11y/alt-text': 'off',
   },
 };
