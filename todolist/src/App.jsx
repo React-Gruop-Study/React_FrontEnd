@@ -8,8 +8,7 @@ import GNB from 'common/navbar/GNB';
 import 'App.css';
 import ImgTest from './test/ImgTest';
 import ReactSlick from './test/ReactSlick';
-import ModalTest from './test/ModalTest';
-import TextFieldTest from './test/TextFieldTest';
+import TextFieldTest from './test/modaltest/TextFieldModalTest';
 
 const App = () => {
   return (
@@ -33,7 +32,6 @@ const App = () => {
             {/* 밑으로 테스트하는 화면들 */}
             <Route path='imgtest' element={<ImgTest />} />
             <Route path='slicktest' element={<ReactSlick />} />
-            <Route path='modaltest' element={<ModalTest />} />
             <Route path='textfieldtest' element={<TextFieldTest />} />
           </Routes>
         </Box>
