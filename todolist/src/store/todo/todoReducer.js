@@ -43,7 +43,6 @@ const todoSlice = createSlice({
       state.loading = false;
     },
     [thunkGetList.rejected]: (state, action) => {
-      console.log(`rejected`);
       state.loading = false;
     },
 
@@ -57,11 +56,9 @@ const todoSlice = createSlice({
       state.sno = action.payload[0][0].sno;
       state.text = action.payload[0][0].text;
       state.imgSrc = action.payload[0][1].path;
-      console.log(`1 : ${state.sno}, ${state.text}, ${state.imgSrc}`);
       state.loading = false;
     },
     [thunkGetTextWithImg.rejected]: (state, action) => {
-      console.log(`rejected`);
       state.loading = false;
     },
 
@@ -76,7 +73,6 @@ const todoSlice = createSlice({
       state.saveResImgList = action.payload;
     },
     [thunkSaveTodo.rejected]: (state, action) => {
-      console.log(`rejected`);
       state.errMsg = action.payload;
       state.loading = false;
     },
@@ -92,7 +88,6 @@ const todoSlice = createSlice({
       state.loading = false;
     },
     [thunkModifyTodo.rejected]: (state, action) => {
-      console.log(`rejected`);
       state.errMsg = action.payload;
       state.loading = false;
     },
@@ -105,12 +100,9 @@ const todoSlice = createSlice({
     },
     [thunkDeleteTodo.fulfilled]: (state, action) => {
       state.message = action.payload;
-      console.log(state.message);
       state.loading = false;
     },
     [thunkDeleteTodo.rejected]: (state, action) => {
-      console.log(`rejected`);
-      state.errMsg = action.payload;
       state.loading = false;
     },
   },
