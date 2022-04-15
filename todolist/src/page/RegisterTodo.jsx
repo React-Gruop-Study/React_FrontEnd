@@ -31,19 +31,24 @@ const RegisterTodo = () => {
   const saveTextFn = async () => {
     const text = saveTextRef.current.value;
     try {
-      await dispatch(thunkSaveTodo({ text, imgDTOList, fileList })).then(() => {
-        alert(errMsg);
-      });
+      await dispatch(thunkSaveTodo({ text, imgDTOList, fileList })).then(
+        (action) => {
+          alert(errMsg);
+          const uuidStr = action.payload[0].uuid;
+          const imgList = Array.from(action.payload);
+          imgList.forEach((res) => {
+            console.log(res);
+            setDoc(doc(firebaseDB, 'sns', uuidStr), {
+              text: { text },
+              path: res.path,
+              imgName: res.imgName,
+            }).then(() => alert('파이어베이스저장완료'));
+          });
+        },
+      );
     } catch (rejectedValueOrSerializedError) {
       alert(rejectedValueOrSerializedError);
     }
-  };
-
-  // uuid, path, imgName 저장용
-  const registText = () => {
-    setDoc(doc(firebaseDB, 'Test', '2'), {
-      text: 'HELLO WORLD',
-    }).then(() => alert('저장완료'));
   };
 
   return (
