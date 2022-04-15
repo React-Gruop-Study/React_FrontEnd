@@ -1,43 +1,73 @@
-import React from 'react';
-import { createPortal } from 'react-dom';
-import CloseIcon from '@mui/icons-material/Close';
-import * as Styled from 'common/modal/Modal.style';
+/* eslint-disable consistent-return */
+import React, { useState, useEffect } from 'react';
+import { Button, Modal, Box, Typography } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
-let modalRoot = document.querySelector('#modal');
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
 
-const Modal = ({
-  open,
-  isClosableDimmer,
-  showCloseButton,
-  onClose,
-  children,
+const CmnModal = ({
+  header,
+  content,
+  modalState,
+  onClickModalClose,
+  returnLink,
 }) => {
-  if (modalRoot === null) {
-    // Note: 테스트(Jest)에서 modalRoot를 인식하지 못하는 문제해결
-    modalRoot = document.createElement('div');
-    modalRoot.setAttribute('id', 'modal');
-    document.body.appendChild(modalRoot);
-  }
+  const [modalOpen, setModalOpen] = useState(false);
+  const navigator = useNavigate();
+  useEffect(() => {
+    setModalOpen(modalState);
+  }, [modalState]);
 
-  const handleMouseDownOverlay = ({ target, currentTarget }) => {
-    if (isClosableDimmer && target === currentTarget) {
-      onclose();
+  const linkToSomeWhere = () => {
+    switch (returnLink) {
+      case '0':
+        return navigator(0);
+      default:
+        navigator(returnLink);
     }
   };
 
-  return createPortal(
-    <Styled.Overlay open={open} onMouseDown={handleMouseDownOverlay}>
-      <Styled.Modal>
-        {open && showCloseButton && (
-          <Styled.CloseButton onClick={onClose}>
-            <CloseIcon />
-          </Styled.CloseButton>
-        )}
-        {open && children}
-      </Styled.Modal>
-    </Styled.Overlay>,
-    modalRoot,
+  return (
+    <div>
+      <Modal
+        open={modalOpen}
+        onClose={() => {
+          onClickModalClose();
+          linkToSomeWhere();
+        }}
+      >
+        <Box sx={style}>
+          <Typography id='modal-modal-title' variant='h6' component='h2'>
+            {header}
+          </Typography>
+          <Typography id='modal-modal-description' sx={{ mt: 2 }}>
+            {content}
+          </Typography>
+          <Box mt={5} style={{ float: 'right' }}>
+            <Button
+              variant='outlined'
+              onClick={() => {
+                onClickModalClose();
+                linkToSomeWhere();
+              }}
+            >
+              Close
+            </Button>
+          </Box>
+        </Box>
+      </Modal>
+    </div>
   );
 };
 
-export default Modal;
+export default CmnModal;

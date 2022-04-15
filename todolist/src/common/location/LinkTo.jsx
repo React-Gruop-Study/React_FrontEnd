@@ -109,7 +109,7 @@ export const LinkToTextFieldTest = () => {
 
   return (
     <Button type='button' variant='outlined' onClick={linkToRegistFn}>
-      인풋텍스트 테스트
+      인풋텍스트 및 모달 테스트
     </Button>
   );
 };

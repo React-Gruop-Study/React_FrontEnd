@@ -1,7 +1,5 @@
-/* eslint-disable no-param-reassign */
 import React, { useState, useEffect } from 'react';
 import { Button, Modal, Box, Typography } from '@mui/material';
-import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 const style = {
@@ -16,7 +14,7 @@ const style = {
   p: 4,
 };
 
-const ModalTest = ({
+const CmnModal = ({
   header,
   content,
   modalState,
@@ -30,13 +28,18 @@ const ModalTest = ({
   }, [modalState]);
 
   const linkToSomeWhere = () => {
-    navigator(returnLink);
+    return returnLink && navigator(returnLink);
   };
 
   return (
     <div>
-      {/* <Button onClick={handleModalOpen}>OpenModal</Button> */}
-      <Modal open={modalOpen} onClose={onClickModalClose}>
+      <Modal
+        open={modalOpen}
+        onClose={() => {
+          onClickModalClose();
+          linkToSomeWhere();
+        }}
+      >
         <Box sx={style}>
           <Typography id='modal-modal-title' variant='h6' component='h2'>
             {header}
@@ -47,10 +50,12 @@ const ModalTest = ({
           <Box mt={5} style={{ float: 'right' }}>
             <Button
               variant='outlined'
-              onClick={(onClickModalClose, linkToSomeWhere)}
+              onClick={() => {
+                onClickModalClose();
+                linkToSomeWhere();
+              }}
             >
               Close
-              {}
             </Button>
           </Box>
         </Box>
@@ -59,4 +64,4 @@ const ModalTest = ({
   );
 };
 
-export default ModalTest;
+export default CmnModal;

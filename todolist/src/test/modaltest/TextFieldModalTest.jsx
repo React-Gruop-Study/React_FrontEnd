@@ -3,17 +3,20 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { useRef, useState } from 'react';
 import { Button } from '@mui/material';
-import ModalTest from './ModalTest';
+import Modal from 'common/modal/Modal';
 
-const TextFieldTest = () => {
+const TextFieldModalTest = () => {
   const ref = useRef();
 
+  const [modalHeader, setModalHeader] = useState();
+  const [modalContent, setModalContent] = useState();
+  const [modalRedirect, setModalRedirect] = useState();
   const [modalOpen, setModalOpen] = useState(false);
   const onClickRefTest = () => {
-    console.log(ref.current.value);
     setModalOpen(true);
+    setModalHeader('알림');
+    setModalContent('저장완료입니다.');
   };
-
   const handleModalClose = () => {
     setModalOpen(false);
   };
@@ -40,9 +43,9 @@ const TextFieldTest = () => {
       >
         Test
       </Button>
-      <ModalTest
-        header='안녕하세요'
-        content='알림입니다 저장되었다라나..'
+      <Modal
+        header={modalHeader}
+        content={modalContent}
         modalState={modalOpen}
         returnLink='/'
         onClickModalClose={handleModalClose}
@@ -51,4 +54,4 @@ const TextFieldTest = () => {
   );
 };
 
-export default TextFieldTest;
+export default TextFieldModalTest;

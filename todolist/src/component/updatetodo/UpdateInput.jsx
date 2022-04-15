@@ -17,7 +17,6 @@ const UpdateViewer = forwardRef(({ onClick }, ref) => {
   useEffect(() => {
     dispatch(thunkGetTextWithImg(sno));
   }, [text]);
-  console.log(`2 : ${sno}, ${text}, ${src}`);
 
   return (
     <div>
