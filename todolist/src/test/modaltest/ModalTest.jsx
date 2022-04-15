@@ -1,4 +1,3 @@
-/* eslint-disable consistent-return */
 import React, { useState, useEffect } from 'react';
 import { Button, Modal, Box, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
@@ -29,12 +28,7 @@ const CmnModal = ({
   }, [modalState]);
 
   const linkToSomeWhere = () => {
-    switch (returnLink) {
-      case '0':
-        return navigator(0);
-      default:
-        navigator(returnLink);
-    }
+    return returnLink && navigator(returnLink);
   };
 
   return (
